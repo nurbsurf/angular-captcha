@@ -46,6 +46,7 @@ export class CaptchaComponent implements OnInit {
           var doc = new DOMParser().parseFromString(captchaHtml, 'text/html');
           doc.getElementsByTagName('link')[0].remove();
           doc.getElementsByTagName('head')[0].remove();
+          // force display of image on load
           doc.getElementsByClassName('BDC_CaptchaImage')[0]['style']['display']='inline';
           captchaHtml = doc.querySelectorAll('.BDC_CaptchaDiv')[0].innerHTML
           captchaHtml = captchaHtml.split("/botdetect/botdetectcaptcha").join(self.captchaService.captchaEndpoint);
