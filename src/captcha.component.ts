@@ -38,10 +38,17 @@ export class CaptchaComponent implements OnInit {
 
   // Display captcha html markup in the <botdetect-captcha> tag.
   displayHtml(): void {
+    let self = this;
     this.captchaService.getHtml()
       .subscribe(
         captchaHtml => {
           // display captcha html markup
+          var doc = new DOMParser().parseFromString(captchaHtml, 'text/html');
+          doc.getElementsByTagName('link')[0].remove();
+          doc.getElementsByTagName('head')[0].remove();
+          doc.getElementsByClassName('BDC_CaptchaImage')[0]['style']['display']='inline';
+          captchaHtml = doc.querySelectorAll('.BDC_CaptchaDiv')[0].innerHTML
+          captchaHtml = captchaHtml.split("/botdetect/botdetectcaptcha").join(self.captchaService.captchaEndpoint);
           this.elementRef.nativeElement.innerHTML = captchaHtml;
           // load botdetect scripts
           this.loadScriptIncludes();
